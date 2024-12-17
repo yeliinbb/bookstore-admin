@@ -17,7 +17,7 @@ const SearchForm = memo(({ onSearch }: SearchHeaderProps) => {
     if (inputRef.current) {
       inputRef.current.focus(); // 페이지 렌더링 시 포커스 설정
     }
-  }, []);
+  }, [inputRef]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -47,5 +47,7 @@ const SearchForm = memo(({ onSearch }: SearchHeaderProps) => {
     </form>
   );
 });
+
+SearchForm.displayName = 'SearchForm';
 
 export default SearchForm;

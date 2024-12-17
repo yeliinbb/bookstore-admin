@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { getBookList } from '@/api/books/books';
@@ -16,12 +16,11 @@ interface BookListProps {
 const BookList = memo(({ searchQuery }: BookListProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { data, isError, error, isPending, isSuccess } =
-    useQuery<BookListResponse>({
-      queryKey: [queryKeys.books, searchQuery, currentPage],
-      queryFn: () => getBookList({ page: currentPage as number }),
-      staleTime: 1000 * 60 * 5,
-    });
+  const { data, isError, error, isPending } = useQuery<BookListResponse>({
+    queryKey: [queryKeys.books, searchQuery, currentPage],
+    queryFn: () => getBookList({ page: currentPage as number }),
+    staleTime: 1000 * 60 * 5,
+  });
 
   const filteredBooks = useMemo(() => {
     if (!searchQuery) return data?.booklist || [];
@@ -33,7 +32,7 @@ const BookList = memo(({ searchQuery }: BookListProps) => {
   }, [searchQuery, data]);
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage((prev) =>
+    setCurrentPage((_prev) =>
       Math.max(1, Math.min(newPage, data?.total_pages || 1)),
     );
   };
@@ -62,5 +61,7 @@ const BookList = memo(({ searchQuery }: BookListProps) => {
     </div>
   );
 });
+
+BookList.displayName = 'BookList';
 
 export default BookList;
