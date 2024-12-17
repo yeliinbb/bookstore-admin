@@ -32,7 +32,6 @@ export async function GET(request: NextRequest) {
         { status: 400 },
       );
     }
-
     // 데이터 읽기
     const data = await readData();
 
@@ -55,7 +54,8 @@ export async function GET(request: NextRequest) {
 
     // 페이지네이션 로직
     const startIndex = (page - 1) * item;
-    const paginatedData = data.slice(startIndex, startIndex + item);
+    const endIndex = startIndex + item;
+    const paginatedData = data.slice(startIndex, endIndex);
 
     // 응답 객체
     const response = {
