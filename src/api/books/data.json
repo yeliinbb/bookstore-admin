@@ -158,5 +158,45 @@
     "quantity": 8,
     "description": "A Gothic tale of vanity, hedonism, and moral corruption centered on a portrait that bears the sins of its subject.",
     "image": "https://picsum.photos/seed/book20/200/300"
+  },
+  {
+    "id": 21,
+    "title": "Jane Eyre",
+    "author": "Charlotte Brontë",
+    "quantity": 6,
+    "description": "An orphaned girl's journey through hardship, love, and finding her place in society.",
+    "image": "https://picsum.photos/seed/book21/200/300"
+  },
+  {
+    "id": 22,
+    "title": "Wuthering Heights",
+    "author": "Emily Brontë",
+    "quantity": 7,
+    "description": "A haunting tale of passion and revenge set on the Yorkshire moors.",
+    "image": "https://picsum.photos/seed/book22/200/300"
+  },
+  {
+    "id": 23,
+    "title": "Great Expectations",
+    "author": "Charles Dickens",
+    "quantity": 10,
+    "description": "The story of Pip, an orphan, and his journey through adversity, ambition, and self-discovery.",
+    "image": "https://picsum.photos/seed/book23/200/300"
+  },
+  {
+    "id": 24,
+    "title": "The Scarlet Letter",
+    "author": "Nathaniel Hawthorne",
+    "quantity": 4,
+    "description": "A powerful tale of sin, guilt, and redemption set in Puritan New England.",
+    "image": "https://picsum.photos/seed/book24/200/300"
+  },
+  {
+    "id": 25,
+    "title": "Mansfield Park",
+    "author": "Jane Austen",
+    "quantity": 8,
+    "description": "A story of morality, class, and love as seen through the perspective of Fanny Price.",
+    "image": "https://picsum.photos/seed/book25/200/300"
   }
 ]
