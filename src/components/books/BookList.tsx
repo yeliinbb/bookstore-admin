@@ -14,19 +14,14 @@ interface BookListProps {
 }
 
 const BookList = memo(({ searchQuery }: BookListProps) => {
-  console.log('BookList 렌더링');
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { data, isError, error, isPending, isSuccess } =
     useQuery<BookListResponse>({
       queryKey: [queryKeys.books, searchQuery, currentPage],
-      queryFn: () =>getBookList({ page: currentPage as number }),
+      queryFn: () => getBookList({ page: currentPage as number }),
       staleTime: 1000 * 60 * 5,
     });
-
-  if (isSuccess) {
-    console.log('data', data);
-  }
 
   const filteredBooks = useMemo(() => {
     if (!searchQuery) return data?.booklist || [];
@@ -37,12 +32,12 @@ const BookList = memo(({ searchQuery }: BookListProps) => {
     );
   }, [searchQuery, data]);
 
-    const handlePageChange = (newPage: number) => {
-      setCurrentPage((prev) =>
-        Math.max(1, Math.min(newPage, data?.total_pages || 1)),
-      );
-    };
-  
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage((prev) =>
+      Math.max(1, Math.min(newPage, data?.total_pages || 1)),
+    );
+  };
+
   return (
     <div className="container invisible-scroll">
       {isError ? <p className="text-red-500">에러: {error?.message}</p> : null}

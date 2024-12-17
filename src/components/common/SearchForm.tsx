@@ -10,8 +10,9 @@ interface SearchHeaderProps {
 }
 
 const SearchForm = memo(({ onSearch }: SearchHeaderProps) => {
-  const { query, setQuery, executeSearch, inputRef, isLoading } = useSearch(onSearch);
-  console.log('SearchForm 렌더링');
+  const { query, setQuery, executeSearch, inputRef, isLoading } =
+    useSearch(onSearch);
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus(); // 페이지 렌더링 시 포커스 설정
@@ -28,8 +29,17 @@ const SearchForm = memo(({ onSearch }: SearchHeaderProps) => {
   };
 
   return (
-    <form onSubmit={handleOnSubmit} className="flex gap-4 p-4 bg-gray-800 items-center rounded-xl">
-      <Input type="text" ref={inputRef} placeholder="제목 또는 저자로 검색" value={query} onChange={handleOnChange} />
+    <form
+      onSubmit={handleOnSubmit}
+      className="flex gap-4 p-4 bg-gray-800 items-center rounded-xl"
+    >
+      <Input
+        type="text"
+        ref={inputRef}
+        placeholder="제목 또는 저자로 검색"
+        value={query}
+        onChange={handleOnChange}
+      />
       {isLoading ? <span className="text-blue-500">로딩 중...</span> : null}
       <Button onClick={executeSearch} disabled={isLoading}>
         검색
