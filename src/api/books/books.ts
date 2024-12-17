@@ -24,5 +24,7 @@ export const getBookList = async ({
     },
   });
 
+  console.log('Request result:', result);
+
   return result;
 };

@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 
 interface ApiError extends Error {
   statusCode?: number;
@@ -15,7 +16,10 @@ interface RequestConfig extends RequestInit {
  * @throws {ApiError} API 요청 실패 시 에러
  */
 
-const client = async <T>(endpoint: string, { params, ...customConfig }: RequestConfig = {}): Promise<T> => {
+const client = async <T>(
+  endpoint: string,
+  { params, ...customConfig }: RequestConfig = {},
+): Promise<T> => {
   const headers = {
     'Content-Type': 'application/json',
     ...customConfig.headers,
@@ -29,13 +33,16 @@ const client = async <T>(endpoint: string, { params, ...customConfig }: RequestC
   //URL에 쿼리파라미터 추가
   const queryString = params ? `?${new URLSearchParams(params)}` : '';
   const url = `${API_BASE_URL}${endpoint}${queryString}`;
+  console.log('Request URL:', url);
 
   try {
     const response = await fetch(url, config);
     const data = await response.json();
 
     if (!response.ok) {
-      const error = new Error(data.message || '요청에 실패했습니다.') as ApiError;
+      const error = new Error(
+        data.message || '요청에 실패했습니다.',
+      ) as ApiError;
       error.statusCode = response.status;
       error.code = data.code;
       throw error;
