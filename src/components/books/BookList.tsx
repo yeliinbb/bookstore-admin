@@ -1,49 +1,48 @@
 'use client';
 
-import { memo, useEffect } from 'react';
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 import { getBookList } from '@/api/books/books';
 import { type BookListResponse } from '@/types/books';
 import BookListSkeleton from './BookListSkeleton';
 import { queryKeys } from '@/constants/queryKeys';
 import BookCard from './BookCard';
+import Pagination from '../common/Pagination';
 interface BookListProps {
   searchQuery: string;
 }
 
 const BookList = memo(({ searchQuery }: BookListProps) => {
   console.log('BookList 렌더링');
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { ref, inView } = useInView({ threshold: 0.5 });
+  const { data, isError, error, isPending, isSuccess } =
+    useQuery<BookListResponse>({
+      queryKey: [queryKeys.books, searchQuery, currentPage],
+      queryFn: () =>getBookList({ page: currentPage as number }),
+      staleTime: 1000 * 60 * 5,
+    });
 
-  const {
-    data,
-    isError,
-    error,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-    isPending,
-  } = useSuspenseInfiniteQuery<BookListResponse>({
-    queryKey: [queryKeys.books, searchQuery],
-    queryFn: ({ pageParam = 1 }) =>
-      getBookList({ page: pageParam as number, query: searchQuery }),
-    getNextPageParam: (lastPage) => {
-      const nextPage = lastPage.current_page + 1;
-      return nextPage <= lastPage.total_pages ? nextPage : undefined;
-    },
-    initialPageParam: 1,
-    staleTime: 1000 * 60 * 5,
-  });
+  if (isSuccess) {
+    console.log('data', data);
+  }
 
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const filteredBooks = useMemo(() => {
+    if (!searchQuery) return data?.booklist || [];
+    return (data?.booklist || []).filter(
+      (book) =>
+        book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [searchQuery, data]);
 
+    const handlePageChange = (newPage: number) => {
+      setCurrentPage((prev) =>
+        Math.max(1, Math.min(newPage, data?.total_pages || 1)),
+      );
+    };
+  
   return (
     <div className="container invisible-scroll">
       {isError ? <p className="text-red-500">에러: {error?.message}</p> : null}
@@ -51,12 +50,8 @@ const BookList = memo(({ searchQuery }: BookListProps) => {
         <BookListSkeleton />
       ) : (
         <div className="grid grid-cols-2 gap-4">
-          {data?.pages.flatMap((page) => page.booklist).length > 0 ? (
-            data?.pages.flatMap((page) =>
-              page.booklist.map((book) => (
-                <BookCard key={book.id} book={book} />
-              )),
-            )
+          {filteredBooks.length > 0 ? (
+            filteredBooks.map((book) => <BookCard key={book.id} book={book} />)
           ) : (
             <p className="text-center col-span-2 text-white">
               검색 결과가 없습니다.
@@ -64,11 +59,11 @@ const BookList = memo(({ searchQuery }: BookListProps) => {
           )}
         </div>
       )}
-
-      {/* 무한 스크롤 감지 영역 */}
-      <div ref={ref} className="h-10 mt-4">
-        {isFetchingNextPage ? <BookListSkeleton /> : null}
-      </div>
+      <Pagination
+        totalPages={data?.total_pages}
+        page={currentPage}
+        handlePageChange={handlePageChange}
+      />
     </div>
   );
 });
