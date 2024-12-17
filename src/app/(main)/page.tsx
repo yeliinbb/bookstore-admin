@@ -1,5 +1,7 @@
+import BookListContainer from '@/components/books/BookListContainer';
+
 const MainBookListPage = () => {
-  return <div>MainBookListPage</div>;
+  return <BookListContainer />;
 };
 
 export default MainBookListPage;
