@@ -1,5 +1,4 @@
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 interface ApiError extends Error {
   statusCode?: number;
@@ -33,7 +32,6 @@ const client = async <T>(
   //URL에 쿼리파라미터 추가
   const queryString = params ? `?${new URLSearchParams(params)}` : '';
   const url = `${API_BASE_URL}${endpoint}${queryString}`;
-  console.log('Request URL:', url);
 
   try {
     const response = await fetch(url, config);

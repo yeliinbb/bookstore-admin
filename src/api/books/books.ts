@@ -1,4 +1,4 @@
-import { type BookListResponse } from '@/types/books';
+import { Book, type BookListResponse } from '@/types/books';
 import client from '../client';
 
 export interface BookListParams {
@@ -17,7 +17,7 @@ export const getBookList = async ({
   page = 1,
   item = ITEM_COUNT,
 }: BookListParams) => {
-  const result = await client<BookListResponse>('/api/books', {
+  const result = await client<BookListResponse>('/books', {
     params: {
       page: page.toString(),
       item: item.toString(),
@@ -25,4 +25,12 @@ export const getBookList = async ({
   });
 
   return result;
+};
+
+/**
+ * 책 상세 정보를 가져오는 API
+ * @param id 영화 ID
+ */
+export const getBookDetail = async (id: string): Promise<Book> => {
+  return client<Book>(`/books/${id}`);
 };
