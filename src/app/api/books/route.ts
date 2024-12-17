@@ -1,16 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
 
 const PAGE_SIZE = 10; // 기본 페이지당 아이템 수
-
-const DATA_FILE = path.resolve(process.cwd(), 'src/api/books/data.json');
-
-// 데이터 읽기 함수
-const readData = async () => {
-  const data = await fs.readFile(DATA_FILE, 'utf-8');
-  return JSON.parse(data);
-};
 
 export async function GET(request: NextRequest) {
   try {
@@ -32,8 +22,10 @@ export async function GET(request: NextRequest) {
         { status: 400 },
       );
     }
-    // 데이터 읽기
-    const data = await readData();
+
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/books?page=${page}&item=${item}`,
+    );
 
     if (!data || !Array.isArray(data)) {
       throw new Error('Invalid data format');
