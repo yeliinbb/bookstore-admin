@@ -1,15 +1,7 @@
-import { Suspense, lazy } from 'react';
-
-// 동적 임포트를 통한 지연 로딩
-const BookList = lazy(() => import('@/components/books/BookList'));
-const BookListSkeleton = lazy(() => import('@/components/books/BookListSkeleton'));
+import BookListContainer from '@/components/books/BookListContainer';
 
 const MainBookListPage = () => {
-  return (
-    <Suspense fallback={<BookListSkeleton />}>
-      <BookList />
-    </Suspense>
-  );
+  return <BookListContainer />;
 };
 
 export default MainBookListPage;

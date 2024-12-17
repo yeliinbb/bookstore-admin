@@ -1,5 +1,9 @@
 const LoadingPage = () => {
-  return <div>LoadingPage</div>;
+  return (
+    <div className="w-full h-screen flex items-center justify-center">
+      <span className="loading-loader text-center"></span>
+    </div>
+  );
 };
 
 export default LoadingPage;

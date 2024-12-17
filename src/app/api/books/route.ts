@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1', 10);
     const item = parseInt(searchParams.get('item') || PAGE_SIZE.toString(), 10);
+    const query = searchParams.get('query')?.toLowerCase() || ''; // 단일 검색 파라미터
 
     // 파라미터 유효성 검사
     if (isNaN(page) || page < 1) {
@@ -34,21 +35,38 @@ export async function GET(request: NextRequest) {
       throw new Error('Invalid data format');
     }
 
-    // 총 아이템 수 및 페이지 수 계산
-    const totalItems = data.length;
-    const totalPage = Math.ceil(totalItems / item);
+    // 필터링 로직: 제목 또는 저자에 query 포함
+    const filteredData = query
+      ? data.filter((book) => {
+          const queryLower = query.toLowerCase();
+          console.log('검색어 검사:', book.title, book.author, queryLower);
 
-    if (page > totalPage) {
-      return NextResponse.json({ message: 'Page number exceeds total pages' }, { status: 400 });
+          const matchesTitle = book.title.toLowerCase().includes(queryLower);
+          const matchesAuthor = book.author.toLowerCase().includes(queryLower);
+          return matchesTitle || matchesAuthor;
+        })
+      : data;
+
+    // 총 아이템 수 및 페이지 수 계산
+    const totalItems = filteredData.length;
+    const totalPages = Math.ceil(totalItems / item);
+
+    if (page > totalPages) {
+      return NextResponse.json({
+        total_pages: totalPages,
+        total_items: totalItems,
+        current_page: page,
+        booklist: [],
+      });
     }
 
     // 페이지네이션 로직
     const startIndex = (page - 1) * item;
-    const paginatedData = data.slice(startIndex, startIndex + item);
+    const paginatedData = filteredData.slice(startIndex, startIndex + item);
 
     // 응답 객체
     const response = {
-      total_pages: totalPage,
+      total_pages: totalPages,
       total_items: totalItems,
       current_page: page,
       booklist: paginatedData,
