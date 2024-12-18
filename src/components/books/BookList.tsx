@@ -26,7 +26,7 @@ const BookList = memo(({ searchQuery }: BookListProps) => {
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: [queryKeys.books] }); // 메인 페이지 데이터 강제 새로고침
-  }, []);
+  }, [queryClient]);
 
   const filteredBooks = useMemo(() => {
     if (!searchQuery) return data?.booklist || [];

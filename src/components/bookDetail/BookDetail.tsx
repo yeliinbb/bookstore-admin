@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useBookActions, useBookForm } from '@/hooks';
 import BackButton from '../common/BackButton';
 import BookFormLayout from './BookFormLayout';
@@ -38,7 +38,7 @@ const BookDetail = ({ bookId }: BookDetailProps) => {
       });
       setPreviewImage(book.image);
     }
-  }, [isEditing, book]);
+  }, [isEditing, book, setFormData, setPreviewImage]);
 
   const handleSubmit = () => {
     handleEditBook(formData);

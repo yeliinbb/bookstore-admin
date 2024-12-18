@@ -1,3 +1,4 @@
+import { Book } from '@/types/books';
 import {
   BookTitle,
   BookAuthor,
@@ -9,7 +10,7 @@ import BookFormLayoutButtons from './BookFormLayoutButtons';
 
 interface BookFormLayoutProps {
   mode: 'add' | 'edit';
-  formData: any;
+  formData: Book;
   previewImage: string | null;
   isEditing: boolean;
   onChange: (field: string) => (value: string | number) => void;
