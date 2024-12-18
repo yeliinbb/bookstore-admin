@@ -4,29 +4,30 @@ interface BookQuantityProps {
   quantity: number;
   editQuantity?: number;
   isEditing?: boolean;
-  onEdit?: (value: number) => void;
+  onChange?: (value: number) => void;
 }
 
 const BookQuantity = ({
   quantity,
   editQuantity,
   isEditing = false,
-  onEdit,
+  onChange,
 }: BookQuantityProps) => {
-  if (isEditing) {
-    return (
-      <BaseInput
-        type="number"
-        value={editQuantity !== undefined ? editQuantity : quantity}
-        onChange={(e) => onEdit?.(Number(e.target.value))}
-        className="text-black p-2 rounded text-base font-medium w-full"
-        label="Quantity : "
-      />
-    );
-  }
-  return (
+  const value = editQuantity ?? quantity;
+
+  const quantityContent = isEditing ? (
+    <BaseInput
+      type="number"
+      value={value}
+      onChange={(e) => onChange?.(Number(e.target.value))}
+      className="text-black p-2 rounded text-base font-medium w-full"
+      label="Quantity : "
+    />
+  ) : (
     <p className="text-base font-medium text-white">quantity : {quantity}</p>
   );
+
+  return quantityContent;
 };
 
 export default BookQuantity;

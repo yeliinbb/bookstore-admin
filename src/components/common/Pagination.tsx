@@ -24,14 +24,20 @@ const Pagination = ({
 
   return (
     <div className="flex justify-center mt-5 text-white gap-1">
-      <Button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
+      <Button
+        onClick={() => handlePageChange(page - 1)}
+        disabled={page === 1}
+        className="bg-slate-700"
+      >
         prev
       </Button>
       {[...Array(localTotalPages)].map((_, index) => (
         <Button
           key={index + 1}
           onClick={() => handlePageChange(index + 1)}
-          className={`${page === index + 1 ? 'font-bold' : 'font-normal'}`}
+          className={`${
+            page === index + 1 ? 'font-bold' : 'font-normal'
+          } bg-slate-700`}
         >
           {index + 1}
         </Button>
@@ -39,6 +45,7 @@ const Pagination = ({
       <Button
         onClick={() => handlePageChange(page + 1)}
         disabled={page === localTotalPages}
+        className="bg-slate-700"
       >
         next
       </Button>

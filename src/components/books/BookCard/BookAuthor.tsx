@@ -4,26 +4,29 @@ interface BookAuthorProps {
   author: string;
   editAuthor?: string;
   isEditing?: boolean;
-  onEdit?: (value: string) => void;
+  onChange?: (value: string) => void;
 }
 
 const BookAuthor = ({
   author,
   editAuthor,
   isEditing = false,
-  onEdit,
+  onChange,
 }: BookAuthorProps) => {
-  if (isEditing) {
-    return (
-      <BaseInput
-        value={editAuthor !== undefined ? editAuthor : author}
-        onChange={(e) => onEdit?.(e.target.value)}
-        className="text-black p-2 rounded text-xl font-medium w-full"
-        label="Author : "
-      />
-    );
-  }
-  return <h3 className="text-xl font-medium text-white">{author}</h3>;
+  const value = editAuthor ?? author;
+
+  const authorContent = isEditing ? (
+    <BaseInput
+      value={value}
+      onChange={(e) => onChange?.(e.target.value)}
+      className="text-black p-2 rounded text-xl font-medium w-full"
+      label="Author : "
+    />
+  ) : (
+    <h3 className="text-xl font-medium text-white">{author}</h3>
+  );
+
+  return authorContent;
 };
 
 export default BookAuthor;

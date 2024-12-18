@@ -41,7 +41,11 @@ const SearchForm = memo(({ onSearch }: SearchHeaderProps) => {
         onChange={handleOnChange}
       />
       {isLoading ? <span className="text-blue-500">로딩 중...</span> : null}
-      <Button onClick={executeSearch} disabled={isLoading}>
+      <Button
+        onClick={executeSearch}
+        disabled={isLoading}
+        className="bg-slate-500 hover:bg-slate-400"
+      >
         검색
       </Button>
     </form>

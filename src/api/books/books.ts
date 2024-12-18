@@ -58,3 +58,17 @@ export const deleteBook = async (id: number): Promise<{ message: string }> => {
     method: 'DELETE',
   });
 };
+
+/**
+ * 책 추가 API
+ * @param bookData 새로 추가할 책 데이터
+ */
+export const addBook = async (bookData: Omit<Book, 'id'>): Promise<Book> => {
+  return client<Book>('/books', {
+    method: 'POST',
+    body: JSON.stringify(bookData),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};

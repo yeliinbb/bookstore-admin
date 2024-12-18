@@ -66,3 +66,35 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export async function POST(request: NextRequest) {
+  try {
+    const bookData = await request.json();
+
+    if (!bookData.title || !bookData.author) {
+      return NextResponse.json(
+        { message: 'Title and Author are required' },
+        { status: 400 },
+      );
+    }
+
+    const response = await fetch(`${API_BASE_URL}/books`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bookData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to add book');
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data, { status: 201 });
+  } catch (error) {
+    console.error('Error adding book:', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 },
+    );
+  }
+}

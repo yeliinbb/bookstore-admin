@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react';
-
+import clsx from 'clsx';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   className?: string;
@@ -16,9 +16,13 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`min-w-fit px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 ${className}`}
-      onClick={onClick}
+      className={clsx(
+        'px-4 py-2 rounded text-white min-w-fit',
+        disabled && 'cursor-not-allowed opacity-50 bg-gray-300',
+        className,
+      )}
       disabled={disabled}
+      onClick={onClick}
       {...props}
     >
       {children}

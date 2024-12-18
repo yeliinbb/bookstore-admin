@@ -1,9 +1,14 @@
-import { deleteBook, getBookDetail, updateBook } from '@/api/books/books';
+import {
+  addBook,
+  deleteBook,
+  getBookDetail,
+  updateBook,
+} from '@/api/books/books';
 import { queryKeys } from '@/constants';
 import { Book } from '@/types/books';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-interface useBookDetailProps {
+interface useBookActionsProps {
   bookId: Book['id'];
 }
 
@@ -11,7 +16,7 @@ interface MutationContext {
   previousBook: Partial<Book> | undefined;
 }
 
-const useBookDetail = ({ bookId }: useBookDetailProps) => {
+const useBookActions = ({ bookId }: useBookActionsProps) => {
   const queryClient = useQueryClient();
 
   const { data } = useQuery({
@@ -69,4 +74,4 @@ const useBookDetail = ({ bookId }: useBookDetailProps) => {
   };
 };
 
-export default useBookDetail;
+export default useBookActions;

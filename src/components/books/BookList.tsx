@@ -7,7 +7,7 @@ import { type BookListResponse } from '@/types/books';
 import Pagination from '../common/Pagination';
 import { queryKeys } from '@/constants';
 import BookListSkeleton from './BookListSkeleton';
-import BookCard from './BookCard';
+import BookCard from './BookCard/BookCard';
 interface BookListProps {
   searchQuery: string;
 }
