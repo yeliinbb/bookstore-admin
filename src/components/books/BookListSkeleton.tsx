@@ -8,7 +8,7 @@ const BookListSkeleton = () => {
             className="flex gap-2 p-4 rounded-xl bg-gray-800 animate-pulse"
           >
             {/* 이미지 스켈레톤 */}
-            <div className="relative w-[300px] h-[300px] min-w-[200px] rounded-md bg-gray-700 overflow-hidden" />
+            <div className="relative w-[250px] h-[380px] min-w-[250px] rounded-md bg-gray-700 overflow-hidden" />
 
             {/* 텍스트 스켈레톤 */}
             <div className="flex flex-col justify-between flex-1">

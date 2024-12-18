@@ -29,8 +29,46 @@ export const getBookList = async ({
 
 /**
  * 책 상세 정보를 가져오는 API
- * @param id 영화 ID
+ * @param id 책 ID
  */
-export const getBookDetail = async (id: string): Promise<Book> => {
+export const getBookDetail = async (id: number): Promise<Book> => {
   return client<Book>(`/books/${id}`);
+};
+
+/**
+ * 책 정보를 수정하는 API
+ *  * @param id 책 ID
+ */
+export const updateBook = async (
+  id: number,
+  bookData: Partial<Book>,
+): Promise<Book> => {
+  return client<Book>(`/books/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(bookData),
+  });
+};
+
+/**
+ * 책을 삭제하는 API
+ *  * @param id 책 ID
+ */
+export const deleteBook = async (id: number): Promise<{ message: string }> => {
+  return client<{ message: string }>(`/books/${id}`, {
+    method: 'DELETE',
+  });
+};
+
+/**
+ * 책 추가 API
+ * @param bookData 새로 추가할 책 데이터
+ */
+export const addBook = async (bookData: Omit<Book, 'id'>): Promise<Book> => {
+  return client<Book>('/books', {
+    method: 'POST',
+    body: JSON.stringify(bookData),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 };

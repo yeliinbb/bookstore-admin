@@ -1,5 +1,7 @@
+import { AddBookForm } from '@/components/bookDetail';
+
 const BookAddPage = () => {
-  return <div>BookAddPage</div>;
+  return <AddBookForm />;
 };
 
 export default BookAddPage;

@@ -1,6 +1,5 @@
+import { API_BASE_URL, PAGE_SIZE } from '@/constants';
 import { NextRequest, NextResponse } from 'next/server';
-
-const PAGE_SIZE = 10; // 기본 페이지당 아이템 수
 
 export async function GET(request: NextRequest) {
   try {
@@ -23,9 +22,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/books?page=${page}&item=${item}`,
-    );
+    const data = await fetch(`${API_BASE_URL}/books?page=${page}&item=${item}`);
 
     if (!data || !Array.isArray(data)) {
       throw new Error('Invalid data format');
@@ -65,6 +62,38 @@ export async function GET(request: NextRequest) {
         message: 'Internal Server Error',
         error: error instanceof Error ? error.message : error,
       },
+      { status: 500 },
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const bookData = await request.json();
+
+    if (!bookData.title || !bookData.author) {
+      return NextResponse.json(
+        { message: 'Title and Author are required' },
+        { status: 400 },
+      );
+    }
+
+    const response = await fetch(`${API_BASE_URL}/books`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bookData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to add book');
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data, { status: 201 });
+  } catch (error) {
+    console.error('Error adding book:', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
       { status: 500 },
     );
   }

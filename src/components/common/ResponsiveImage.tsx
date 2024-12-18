@@ -22,7 +22,7 @@ const ResponsiveImage = ({ src, alt, priority, className = '', blurColor = '#F3F
         alt={alt}
         fill
         priority={priority}
-        className={`object-contain ${className}`}
+        className={`object-cover ${className}`}
         sizes="100%"
         placeholder="blur" // 블러 처리된 이미지를 먼저 보여줌
         blurDataURL={`data:image/svg+xml;base64,${Buffer.from(blurSvg).toString('base64')}`}

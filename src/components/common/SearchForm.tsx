@@ -1,6 +1,6 @@
 'use client';
 
-import Input from './Input';
+import SearchInput from './Input/SearchInput';
 import Button from './Button';
 import { useSearch } from '@/hooks';
 import { useEffect, memo } from 'react';
@@ -33,7 +33,7 @@ const SearchForm = memo(({ onSearch }: SearchHeaderProps) => {
       onSubmit={handleOnSubmit}
       className="flex gap-4 p-4 bg-gray-800 items-center rounded-xl"
     >
-      <Input
+      <SearchInput
         type="text"
         ref={inputRef}
         placeholder="제목 또는 저자로 검색"
@@ -41,7 +41,11 @@ const SearchForm = memo(({ onSearch }: SearchHeaderProps) => {
         onChange={handleOnChange}
       />
       {isLoading ? <span className="text-blue-500">로딩 중...</span> : null}
-      <Button onClick={executeSearch} disabled={isLoading}>
+      <Button
+        onClick={executeSearch}
+        disabled={isLoading}
+        className="bg-slate-500 hover:bg-slate-400"
+      >
         검색
       </Button>
     </form>

@@ -1,26 +1,32 @@
 'use client';
 
-import { memo, useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-
+import { memo, useEffect, useMemo, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getBookList } from '@/api/books/books';
 import { type BookListResponse } from '@/types/books';
-import BookListSkeleton from './BookListSkeleton';
-import { queryKeys } from '@/constants/queryKeys';
-import BookCard from './BookCard';
 import Pagination from '../common/Pagination';
+import { queryKeys } from '@/constants';
+import BookListSkeleton from './BookListSkeleton';
+import BookCard from './BookCard/BookCard';
 interface BookListProps {
   searchQuery: string;
 }
 
 const BookList = memo(({ searchQuery }: BookListProps) => {
+  const queryClient = useQueryClient();
+
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { data, isError, error, isPending } = useQuery<BookListResponse>({
     queryKey: [queryKeys.books, searchQuery, currentPage],
     queryFn: () => getBookList({ page: currentPage as number }),
     staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: true,
   });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: [queryKeys.books] }); // 메인 페이지 데이터 강제 새로고침
+  }, [queryClient]);
 
   const filteredBooks = useMemo(() => {
     if (!searchQuery) return data?.booklist || [];
