@@ -10,6 +10,7 @@ interface BookImageProps {
   isEditing?: boolean;
   handleImageChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
+  priority?: boolean;
 }
 
 const DEFAULT_IMAGE = '/images/default-book.webp';
@@ -21,6 +22,7 @@ const BookImage = ({
   isEditing,
   handleImageChange,
   className,
+  priority = false,
 }: BookImageProps) => {
   const imageSrc =
     previewImage && previewImage.trim() !== ''
@@ -36,6 +38,8 @@ const BookImage = ({
           src={imageSrc}
           alt={alt ?? '기본 이미지'}
           className={className}
+          priority={priority} // 첫 화면에 보이는 이미지만 priority true로 설정
+          loading={priority ? 'eager' : 'lazy'}
         />
       </div>
       <div className="mt-2 flex flex-col justify-center">

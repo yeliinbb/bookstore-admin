@@ -51,7 +51,9 @@ const BookList = memo(({ searchQuery }: BookListProps) => {
       ) : (
         <div className="grid grid-cols-2 gap-4">
           {filteredBooks.length > 0 ? (
-            filteredBooks.map((book) => <BookCard key={book.id} book={book} />)
+            filteredBooks.map((book, index) => (
+              <BookCard key={book.id} book={book} isPriority={index < 4} />
+            ))
           ) : (
             <p className="text-center col-span-2 text-white">
               검색 결과가 없습니다.

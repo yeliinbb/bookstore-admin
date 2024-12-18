@@ -9,8 +9,9 @@ import BookDescription from './BookDescription';
 
 interface MovieCardProps {
   book: Book;
+  isPriority: boolean;
 }
-const BookCard = ({ book }: MovieCardProps) => {
+const BookCard = ({ book, isPriority }: MovieCardProps) => {
   if (!book) return null;
 
   return (
@@ -18,7 +19,12 @@ const BookCard = ({ book }: MovieCardProps) => {
       href={`/${book.id}`}
       className="flex gap-2 p-4 rounded-xl bg-gray-800 hover:bg-gray-700 transition-colors"
     >
-      <BookImage src={book.image} alt={book.title} isEditing={false} />
+      <BookImage
+        src={book.image}
+        alt={book.title}
+        isEditing={false}
+        priority={isPriority}
+      />
       <div className="flex flex-col justify-between">
         <div>
           <BookTitle id={book.id} title={book.title} />
