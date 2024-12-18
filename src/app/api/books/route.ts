@@ -1,6 +1,5 @@
+import { API_BASE_URL, PAGE_SIZE } from '@/constants';
 import { NextRequest, NextResponse } from 'next/server';
-
-const PAGE_SIZE = 10; // 기본 페이지당 아이템 수
 
 export async function GET(request: NextRequest) {
   try {
@@ -23,9 +22,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/books?page=${page}&item=${item}`,
-    );
+    const data = await fetch(`${API_BASE_URL}/books?page=${page}&item=${item}`);
 
     if (!data || !Array.isArray(data)) {
       throw new Error('Invalid data format');
